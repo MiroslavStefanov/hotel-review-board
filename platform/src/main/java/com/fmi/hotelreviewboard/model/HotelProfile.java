@@ -8,6 +8,12 @@ public class HotelProfile {
     public HotelProfile() {
     }
 
+    public HotelProfile(String id, String name, String review) {
+        this.id = id;
+        this.name = name;
+        this.review = review;
+    }
+
     public String getId() {
         return id;
     }

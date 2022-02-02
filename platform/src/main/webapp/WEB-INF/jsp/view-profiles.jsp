@@ -9,17 +9,17 @@
 <table>
     <thead>
     <tr>
-        <th>ISBN</th>
+        <th>ID</th>
         <th>Name</th>
-        <th>Author</th>
+        <th>Review</th>
     </tr>
     </thead>
     <tbody>
-    <c:forEach items="${books}" var="book">
+    <c:forEach items="${profiles}" var="profile">
         <tr>
-            <td>${book.isbn}</td>
-            <td>${book.name}</td>
-            <td>${book.author}</td>
+            <td>${profile.id}</td>
+            <td>${profile.name}</td>
+            <td>${profile.review}</td>
         </tr>
     </c:forEach>
     </tbody>
