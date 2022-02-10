@@ -1,0 +1,35 @@
+<div id="content" class="jumbotron bg-white p-0" xmlns:th="http://www.w3.org/1999/xhtml">
+
+    <h1 class="text-center text-blue2" th:text="|Welcome back, ${#authentication.principal.username}|"></h1>
+
+    <th:block th:include="fragments/travel/most-recent-travels"></th:block>
+
+    <div class="container-fluid row justify-content-center m-0">
+        <th:block th:include="fragments/util/admin-panel"></th:block>
+        <div class="col-md-7 col-sm-12 bg-blue1 pt-2 rounded my-5 mx-md-5 mx-sm-0 h-450px">
+            <h3 class="text-white text-center m-0 h-15">Popular destinations</h3>
+            <div class="w-100 row m-0 p-0 px-2 bg-white rounded h-80 justify-content-between" id="dest">
+                <div class="col-1 my-auto p-0">
+                    <i class="fa fa-arrow-circle-left text-blue1 clickable d-inline-block"
+                       id="dest-left"></i>
+                </div>
+                <a class="col-10 h-100 p-0 py-1 row fade" id="dest-body">
+                    <div class="h-100 col-6 bg-yellow rounded" id="dest-img"></div>
+                    <div class="h-100 col-6 d-flex flex-column justify-content-between">
+                        <h3 class="text-blue2 text-center" id="dest-name"></h3>
+                        <div class="w-100">
+                            <p class="text-blue2 text-left block-with-text" id="dest-desc"></p>
+                        </div>
+                        <div class="w-100 d-flex">
+                            <small class="text-muted ml-auto" id="dest-visits"></small>
+                        </div>
+                    </div>
+                </a>
+                <div class="col-1 my-auto">
+                    <i class="fa fa-arrow-circle-right text-blue1 clickable d-inline-block" id="dest-right"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script xmlns:th="http://www.w3.org/1999/xhtml" th:src="@{/scripts/destination/popular-destinations.js}"></script>

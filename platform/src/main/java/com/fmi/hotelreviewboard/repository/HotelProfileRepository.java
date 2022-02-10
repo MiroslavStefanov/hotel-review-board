@@ -1,6 +1,6 @@
 package com.fmi.hotelreviewboard.repository;
 
-import com.fmi.hotelreviewboard.model.HotelProfile;
+import com.fmi.hotelreviewboard.model.entity.HotelProfile;
 
 import java.util.Collection;
 import java.util.Optional;

@@ -1,13 +1,11 @@
 package com.fmi.hotelreviewboard.service.impl;
 
-import com.fmi.hotelreviewboard.model.HotelProfile;
+import com.fmi.hotelreviewboard.model.entity.HotelProfile;
 import com.fmi.hotelreviewboard.repository.HotelProfileRepository;
 import com.fmi.hotelreviewboard.service.HotelProfileService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.Optional;
 
 @Service
 public class HotelProfileServiceImpl implements HotelProfileService {

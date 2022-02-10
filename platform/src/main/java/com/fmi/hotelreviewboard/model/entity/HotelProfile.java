@@ -1,4 +1,4 @@
-package com.fmi.hotelreviewboard.model;
+package com.fmi.hotelreviewboard.model.entity;
 
 public class HotelProfile {
     private String id;

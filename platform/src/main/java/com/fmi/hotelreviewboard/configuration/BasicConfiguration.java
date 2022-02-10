@@ -1,6 +1,6 @@
 package com.fmi.hotelreviewboard.configuration;
 
-import com.fmi.hotelreviewboard.model.HotelProfile;
+import com.fmi.hotelreviewboard.model.entity.HotelProfile;
 import com.fmi.hotelreviewboard.repository.HotelProfileRepository;
 import com.fmi.hotelreviewboard.repository.impl.InMemoryHotelProfileRepository;
 import org.springframework.context.annotation.Bean;
