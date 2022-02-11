@@ -85,7 +85,7 @@ public class UserController extends BaseController {
     }
 
     @RequestMapping(path = "/users/{action}", method = RequestMethod.PATCH, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole(T(com.fmi.hotelreviewboard.specific.UserRole).ROLE_ADMIN.name())")
+    @PreAuthorize("hasRole(T(com.fmi.hotelreviewboard.model.UserRole).ROLE_ADMIN.name())")
     public ResponseEntity<String> changeRole(@RequestBody Map<String, Object> updates, @PathVariable("action") String action) {
         return new ResponseEntity<>(this.userService.changeUserRole(action, updates.get("username").toString()), HttpStatus.OK);
     }

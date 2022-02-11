@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ConfirmPasswordValidator.class)
 public @interface ConfirmPasswordMatch {
-    String message() default "{org.softuni.travel-together.validation.Password.confirm}";
+    String message() default "{com.fmi.hotelreviewboard.validation.Password.confirm}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

@@ -34,7 +34,7 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
         if(s == null)
             return false;
 
-        String msg = "{org.softuni.travel-together.validation.Password.";
+        String msg = "{com.fmi.hotelreviewboard.validation.Password.";
         boolean isValid = true;
 
         if(s.length() < minLength || s.length() > maxLength) {

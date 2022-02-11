@@ -1,15 +1,10 @@
 package com.fmi.hotelreviewboard.repository;
 
 import com.fmi.hotelreviewboard.model.entity.HotelProfile;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
-import java.util.Optional;
+@Repository
+public interface HotelProfileRepository extends JpaRepository<HotelProfile, String> {
 
-public interface HotelProfileRepository {
-
-    Collection<HotelProfile> findAll();
-
-    Optional<HotelProfile> findById(String id);
-
-    HotelProfile add(HotelProfile profile);
 }

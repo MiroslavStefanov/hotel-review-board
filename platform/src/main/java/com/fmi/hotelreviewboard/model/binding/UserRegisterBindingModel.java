@@ -61,7 +61,7 @@ public class UserRegisterBindingModel implements PasswordConfirmable {
         this.email = email;
     }
 
-    @NotEmpty(message = "{org.softuni.travel-together.validation.Field.empty}")
+    @NotEmpty(message = "{com.fmi.hotelreviewboard.validation.Field.empty}")
     public String getFirstName() {
         return firstName;
     }
@@ -70,7 +70,7 @@ public class UserRegisterBindingModel implements PasswordConfirmable {
         this.firstName = firstName;
     }
 
-    @NotEmpty(message = "{org.softuni.travel-together.validation.Field.empty}")
+    @NotEmpty(message = "{com.fmi.hotelreviewboard.validation.Field.empty}")
     public String getLastName() {
         return lastName;
     }
@@ -79,7 +79,7 @@ public class UserRegisterBindingModel implements PasswordConfirmable {
         this.lastName = lastName;
     }
 
-    @Pattern(regexp = "[0-9]{0,10}", message = "{org.softuni.travel-together.validation.PhoneNumber.default}")
+    @Pattern(regexp = "[0-9]{0,10}", message = "{com.fmi.hotelreviewboard.validation.PhoneNumber.default}")
     public String getPhoneNumber() {
         return phoneNumber;
     }

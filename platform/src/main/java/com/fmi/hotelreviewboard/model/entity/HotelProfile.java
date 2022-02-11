@@ -1,5 +1,13 @@
 package com.fmi.hotelreviewboard.model.entity;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class HotelProfile {
     private String id;
     private String name;
@@ -14,6 +22,13 @@ public class HotelProfile {
         this.review = review;
     }
 
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
     public String getId() {
         return id;
     }

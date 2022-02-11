@@ -2,8 +2,6 @@
 
     <h1 class="text-center text-blue2" th:text="|Welcome back, ${#authentication.principal.username}|"></h1>
 
-    <th:block th:include="fragments/travel/most-recent-travels"></th:block>
-
     <div class="container-fluid row justify-content-center m-0">
         <th:block th:include="fragments/util/admin-panel"></th:block>
         <div class="col-md-7 col-sm-12 bg-blue1 pt-2 rounded my-5 mx-md-5 mx-sm-0 h-450px">

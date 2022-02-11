@@ -23,12 +23,6 @@ public class HotelProfileServiceImpl implements HotelProfileService {
 
     @Override
     public HotelProfile addProfile(HotelProfile profile) {
-//        final Optional<HotelProfile> existingProfile = profileRepository.findById(profile.getId());
-//        if (existingProfile.isPresent()) {
-//            throw new DuplicateBookException(book);
-//        }
-
-        final HotelProfile savedProfile = profileRepository.add(profile);
-        return savedProfile;
+        return profileRepository.save(profile);
     }
 }
