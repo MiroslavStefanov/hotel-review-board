@@ -1,17 +1,17 @@
 function fillRow(data) {
-    let row = $('.travel-row').first().clone();
-    let template = $('.travel-body').first().clone();
+    let row = $('.hotel-row').first().clone();
+    let template = $('.hotel-body').first().clone();
     row.empty();
-    data._embedded.travels.forEach((t, i) => {
+    data._embedded.hotels.forEach((t, i) => {
         let to = t.toDestination;
         let from = t.fromDestination;
         let publisher = t.publisher;
         let current = template.clone();
         let currentCarouselId = 'carousel'+i.toString();
-        current.find('.travel-text').text(to.name);
-        current.find('.travel-start').text('From: ' +  from.name);
-        current.find('.travel-publisher').text('by '+publisher);
-        current.find('a').attr('href', '/travels/' + t.id);
+        current.find('.hotel-text').text(to.name);
+        current.find('.hotel-start').text('From: ' +  from.name);
+        current.find('.hotel-publisher').text('by '+publisher);
+        current.find('a').attr('href', '/hotels/' + t.id);
 
         let addCurrentCarousel = images => {
             addCarousel(current.find('.carousel-container'), images, currentCarouselId);

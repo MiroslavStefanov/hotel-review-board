@@ -2,7 +2,7 @@
         xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <nav class="navbar navbar-expand-lg navbar-dark bg-blue1">
         <div class="container-fluid" th:with="homeUrl = ${#authorization.expression('isAuthenticated()')} ? '/home' : '/'">
-            <a class="navbar-brand" th:href="@{${homeUrl}}">TravelTogether</a>
+            <a class="navbar-brand" th:href="@{${homeUrl}}">hotelTogether</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
                     aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -27,13 +27,13 @@
                         </a>
                     </li>
                     <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
-                        <a class="nav-link dropdown-toggle" href="#" id="travelsDropdown" data-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle" href="#" id="hotelsDropdown" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">
-                            Travels
+                            hotels
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="travelsDropdown">
-                            <a class="dropdown-item" th:href="@{/travels}">All</a>
-                            <a class="dropdown-item" sec:authorize="isAuthenticated()" th:href="@{/travels/create}">Create</a>
+                        <div class="dropdown-menu" aria-labelledby="hotelsDropdown">
+                            <a class="dropdown-item" th:href="@{/hotels}">All</a>
+<!--                            <a class="dropdown-item" sec:authorize="isAuthenticated()" th:href="@{/templates/hotels/create}">Create</a>-->
                         </div>
                     </li>
                     <li class="nav-item" sec:authorize="isAuthenticated()">

@@ -1,7 +1,7 @@
-<h2 class="text-center text-blue1 p-3">Find your next travel</h2>
+<h2 class="text-center text-blue1 p-3">Find your next hotel</h2>
 
 <div class="container mt-3" xmlns:th="http://www.thymeleaf.org">
-    <form id="travel-search-from" autocomplete="off" class="form-horizontal" method="post" th:action="@{/travels}">
+    <form id="hotel-search-from" autocomplete="off" class="form-horizontal" method="post" th:action="@{/templates/hotels}">
             <table class="d-flex justify-content-center">
                 <tbody class="w-100">
                 <tr class="row d-flex justify-content-center">
@@ -33,15 +33,15 @@
 <script xmlns:th="http://www.thymeleaf.org" th:inline="javascript">
     autocomplete(document.getElementById("from"), [[${allDestinations}]]);
     autocomplete(document.getElementById("to"), [[${allDestinations}]]);
-    $('#travel-search-from').submit((event) => {
+    $('#hotel-search-from').submit((event) => {
         event.preventDefault();
-        let travelPageHandler = new TravelPageHandler();
-        travelPageHandler.arguments.sDest = $('#from').val();
-        travelPageHandler.arguments.eDest = $('#to').val();
-        travelPageHandler.arguments.fDate = $('#when-from').val();
-        travelPageHandler.arguments.tDate = $('#when-to').val();
+        let hotelPageHandler = new hotelPageHandler();
+        hotelPageHandler.arguments.sDest = $('#from').val();
+        hotelPageHandler.arguments.eDest = $('#to').val();
+        hotelPageHandler.arguments.fDate = $('#when-from').val();
+        hotelPageHandler.arguments.tDate = $('#when-to').val();
 
-        let pageService = new PageService(travelPageHandler);
+        let pageService = new PageService(hotelPageHandler);
         pageService.handlePage();
 
         $("#prev").click(pageService.prev);

@@ -1,16 +1,16 @@
 <div xmlns:th="http://www.thymeleaf.org"
     class="jumbotron-fluid pt-5">
 
-    <th:block th:include="fragments/travel/travel-search"  th:with="allDestinations=${model}"></th:block>
+    <th:block th:include="fragments/hotel/hotel-search"  th:with="allDestinations=${model}"></th:block>
 
     <div hidden>
         <div id="map"></div>
         <th:block th:include="fragments/util/carousel"></th:block>
-        <th:block th:include="fragments/travel/travels-row"></th:block>
+        <th:block th:include="fragments/hotel/hotels-row"></th:block>
     </div>
 
     <div class="container-fluid mt-5">
-        <div id="all-travels"></div>
+        <div id="all-hotels"></div>
 
         <th:block th:include="fragments/util/pagination-bar"></th:block>
     </div>

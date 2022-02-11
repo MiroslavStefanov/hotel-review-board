@@ -1,11 +1,11 @@
-function createRequest(travelId, userId, successCallback) {
+function createRequest(hotelId, userId, successCallback) {
     let request = {
-        travel: '/travel_api/' + travelId,
+        hotel: '/hotel_api/' + hotelId,
         user: '/users/' + userId,
     };
     $.ajax({
         type: 'POST',
-        url: '/travelRequests',
+        url: '/hotelRequests',
         dataType: 'json',
         contentType: 'application/json',
         data: JSON.stringify(request),
@@ -22,7 +22,7 @@ function deleteRequest(requestId, successCallback) {
     if(requestId !== null) {
         $.ajax({
             type: 'DELETE',
-            url: '/travelRequests/' + requestId,
+            url: '/hotelRequests/' + requestId,
             dataType: 'json',
             contentType: 'application/json',
             beforeSend: (request) => {
@@ -35,11 +35,11 @@ function deleteRequest(requestId, successCallback) {
     }
 }
 
-function acceptRequest(requestId, travelId, userId, successCallBack) {
+function acceptRequest(requestId, hotelId, userId, successCallBack) {
     deleteRequest(requestId, () => {
         $.ajax({
             type: 'PATCH',
-            url: '/travels/' + travelId + '/add',
+            url: '/hotels/' + hotelId + '/add',
             dataType: 'json',
             contentType: 'application/json',
             data: JSON.stringify({
@@ -55,10 +55,10 @@ function acceptRequest(requestId, travelId, userId, successCallBack) {
     });
 }
 
-function removeAttendant(travelId, userId, successCallback) {
+function removeAttendant(hotelId, userId, successCallback) {
     $.ajax({
         type: 'PATCH',
-        url: '/travels/' + travelId + '/remove',
+        url: '/hotels/' + hotelId + '/remove',
         dataType: 'json',
         contentType: 'application/json',
         data: JSON.stringify({

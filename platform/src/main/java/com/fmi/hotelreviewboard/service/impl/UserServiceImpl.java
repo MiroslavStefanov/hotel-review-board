@@ -37,7 +37,7 @@ import java.util.*;
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
-    private static final String PROFILE_PICTURE_CLOUD_FOLDER = "travel-together/profiles/";
+    private static final String PROFILE_PICTURE_CLOUD_FOLDER = "hotel-together/profiles/";
     private static final int MONTHS_BEFORE_MARK_INACTIVE = 6;
     private static final int MONTHS_BEFORE_DELETE_INACTIVE = 12;
 
@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
             else if(rootCause.contains(WebConstants.UNIQUE_EMAIL_CONSTRAINT_NAME.toLowerCase()))
                 throw new UserEmailAlreadyUsedException(userServiceModel);
             else
-                throw new UserException("Saving travel failed.", e);
+                throw new UserException("Saving hotel failed.", e);
         }
     }
 

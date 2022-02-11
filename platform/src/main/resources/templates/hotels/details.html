@@ -1,8 +1,8 @@
 <div id="content" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <div class="jumbotron-fluid p-3">
-        <h1 class="text-center">Travel Details</h1>
+        <h1 class="text-center">hotel Details</h1>
     </div>
-    <!--/*@thymesVar id="model" type="com.fmi.hotelreviewboard.domain.models.view.TravelDetailsViewModel"*/-->
+    <!--/*@thymesVar id="model" type="com.fmi.hotelreviewboard.domain.models.view.hotelDetailsViewModel"*/-->
     <div id="body" th:object="${model}">
         <div class="container mt-3 mb-5" id="information">
             <h2 class="text-center text-blue2">Information</h2>
@@ -35,8 +35,8 @@
                     <div class="container w-100 mt-auto pt-1" id="actions">
                         <h2 class="text-center text-blue2">Actions</h2>
                         <div class="d-flex justify-content-center">
-                            <a th:href="@{/travels/{id}/edit(id=*{id})}" class="d-inline-block btn btn-blue m-3">Edit</a>
-                            <a th:href="@{/travels/{id}/delete(id=*{id})}" class="d-inline-block btn btn-red m-3">Delete</a>
+                            <a th:href="@{/templates/hotels/{id}/edit(id=*{id})}" class="d-inline-block btn btn-blue m-3">Edit</a>
+                            <a th:href="@{/templates/hotels/{id}/delete(id=*{id})}" class="d-inline-block btn btn-red m-3">Delete</a>
                         </div>
                     </div>
                 </div>
@@ -100,27 +100,27 @@
         </div>
     </div>
 </div>
-<script xmlns:th="http://www.w3.org/1999/xhtml" th:src="@{/scripts/travel-request/request-service.js}"></script>
+<script xmlns:th="http://www.w3.org/1999/xhtml" th:src="@{/scripts/hotel-request/request-service.js}"></script>
 <script xmlns:th="http://www.w3.org/1999/xhtml" th:src="@{/scripts/util/map-service.js}"></script>
 <script xmlns:th="http://www.thymeleaf.org" th:inline="javascript">
     function remove(button) {
-        let travelId = [[${model.id}]];
+        let hotelId = [[${model.id}]];
         let userId = $(button).data('attendant-id');
-        removeAttendant(travelId, userId, () => {
+        removeAttendant(hotelId, userId, () => {
             $(button).parent().remove();
         })
     }
 
     $(document).ready(() => {
         $('#send-request-btn').click(() => {
-            let travelId = [[${model.id}]];
+            let hotelId = [[${model.id}]];
             let userId = [[${currentUserId}]];
             let callback = () => {
                 let requestBtn = $('#send-request-btn');
                 requestBtn.text('Request sent');
                 requestBtn.prop('disabled', true);
             };
-            createRequest(travelId, userId, callback);
+            createRequest(hotelId, userId, callback);
         });
 
         $('#cancel-request-btn').click(() => {

@@ -1,6 +1,6 @@
 <div class="container-fluid p-5" xmlns:th="http://www.thymeleaf.org">
-    <!--/*@thymesVar id="model" type="com.fmi.hotelreviewboard.domain.models.view.TravelCreateViewModel"*/-->
-    <div class="container w-100 bg-white p-4" th:with="text=${#strings.capitalize(model.action) + ' Travel'}">
+    <!--/*@thymesVar id="model" type="com.fmi.hotelreviewboard.domain.models.view.hotelCreateViewModel"*/-->
+    <div class="container w-100 bg-white p-4" th:with="text=${#strings.capitalize(model.action) + ' hotel'}">
         <h1 class="text-center text-blue2 font-weight-bold pb-4" th:text="${text}"></h1>
 
         <form autocomplete="off" method="post" th:action="@{/{url}(url=${model.targetUrl})}"
@@ -8,11 +8,11 @@
             <fieldset th:disabled="${model.action == 'delete'}" }>
 
                 <th:block th:insert="fragments/forms/form-control"
-                          th:with="type='text', fieldName='from', label='Travel starting point',class='autocomplete w-100',labelClass='text-blue2'">
+                          th:with="type='text', fieldName='from', label='hotel starting point',class='autocomplete w-100',labelClass='text-blue2'">
                 </th:block>
 
                 <th:block th:insert="fragments/forms/form-control"
-                          th:with="type='text', fieldName='to', label='Travel ending point',class='autocomplete w-100',labelClass='text-blue2'">
+                          th:with="type='text', fieldName='to', label='hotel ending point',class='autocomplete w-100',labelClass='text-blue2'">
                 </th:block>
 
                 <th:block th:insert="fragments/forms/form-control"

@@ -1,0 +1,6 @@
+<a th:href="@{/templates/hotels/{id}(id=${item.id})}" th:with="hotel=${item}">
+    <h5 class="pl-3 text-blue2" th:text="${hotel.name}"></h5>
+    <div class="pl-3">
+        <small class="text-muted" th:text="|Departure at ${#temporals.format(hotel.departureTime)}|"></small>
+    </div>
+</a>

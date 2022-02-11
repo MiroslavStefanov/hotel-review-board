@@ -1,4 +1,4 @@
-class TravelPageHandler {
+class hotelPageHandler {
     arguments = {
         page: 0,
         size: 10,
@@ -9,7 +9,7 @@ class TravelPageHandler {
     }
 
     constructor() {
-        this.baseUrl = '/travel_api/search/findAllActiveBySearchParameters?projection=travelProjection&sort=publishedAt,desc';
+        this.baseUrl = '/hotel_api/search/findAllActiveBySearchParameters?projection=hotelProjection&sort=publishedAt,desc';
     }
 
     buildUrl() {
@@ -30,7 +30,7 @@ class TravelPageHandler {
             url: url,
             success: (data) => {
                 pageService.setSize(data.page.totalPages);
-                let section = $('#all-travels');
+                let section = $('#all-hotels');
                 let row = fillRow(data);
                 section.empty();
                 section.append(row);

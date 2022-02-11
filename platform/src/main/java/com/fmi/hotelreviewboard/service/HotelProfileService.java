@@ -10,4 +10,8 @@ public interface HotelProfileService {
 
     HotelProfile addProfile(HotelProfile profile);
 
+    HotelProfile getProfile(String id);
+
+    void deleteProfile(String id);
+
 }

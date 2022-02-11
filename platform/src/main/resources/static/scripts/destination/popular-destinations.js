@@ -28,9 +28,9 @@ function showPreview(destinations, indx, elems, delay){
         elems.name.text(current.name);
         elems.description.text(current.description);
         let word = ' times';
-        if (current.travelCount === 1)
+        if (current.hotelCount === 1)
             word = ' time';
-        elems.visits.text('Visited ' + current.travelCount + word);
+        elems.visits.text('Visited ' + current.hotelCount + word);
         elems.parent.removeClass('fade');
         elems.parent.addClass('reveal');
         elems.parent.attr('href', '/destinations/details/' + current.id);
