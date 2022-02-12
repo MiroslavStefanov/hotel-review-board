@@ -1,0 +1,25 @@
+version: '3'
+services:
+  mysql:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=alabala
+      - MYSQL_DATABASE=hotel-review
+      - MYSQL_USER=test
+      - MYSQL_PASSWORD=1234
+    volumes:
+      - db-hotel:/var/lib/postgresql/data
+    ports:
+      - "3306:3306"
+
+  spring:
+    image: hotel/platform
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    build: .
+    ports:
+      - "8080:8080"
+    links:
+      - mysql
+volumes:
+  db-hotel:
