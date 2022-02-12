@@ -49,19 +49,21 @@ public class HotelController extends BaseController {
     @PreAuthorize(hotel_ACTION_AUTHORIZATION_EXPRESSION_STRING)
     public void delete(@PathVariable("id") String id) {
         hotelProfileService.deleteProfile(id);
-//        return super.redirect("/hotels");
     }
 
     @GetMapping("/{id}")
     public ModelAndView details(@PathVariable("id") String id) {
-        return super.view("hotels/details", this.modelMapper.map(
-                hotelProfileService.getProfile(id),
-                HotelProfile.class
-        ));
+        return super.view("hotels/details", hotelProfileService.getProfile(id));
     }
 
     @GetMapping()
     public ModelAndView all() {
         return super.view("hotels/all", null);
+    }
+
+    @PostMapping("/review/{id}")
+    public ModelAndView addReview(@PathVariable("id") String id, @RequestBody String content, Principal principal) {
+        hotelProfileService.addReview(principal, id, content);
+        return super.view("hotels/details", hotelProfileService.getProfile(id));
     }
 }

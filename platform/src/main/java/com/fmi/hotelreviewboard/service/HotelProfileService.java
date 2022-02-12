@@ -2,6 +2,7 @@ package com.fmi.hotelreviewboard.service;
 
 import com.fmi.hotelreviewboard.model.entity.HotelProfile;
 
+import java.security.Principal;
 import java.util.Collection;
 
 public interface HotelProfileService {
@@ -14,4 +15,5 @@ public interface HotelProfileService {
 
     void deleteProfile(String id);
 
+    void addReview(Principal principal, String hotelId, String content);
 }

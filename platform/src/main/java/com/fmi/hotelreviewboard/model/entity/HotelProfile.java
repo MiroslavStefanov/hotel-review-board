@@ -2,16 +2,14 @@ package com.fmi.hotelreviewboard.model.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class HotelProfile {
     private String id;
     private String name;
-    private String review;
+    private Set<Review> reviews;
 
     public HotelProfile() {
     }
@@ -19,7 +17,6 @@ public class HotelProfile {
     public HotelProfile(String id, String name, String review) {
         this.id = id;
         this.name = name;
-        this.review = review;
     }
 
     @Id
@@ -45,11 +42,12 @@ public class HotelProfile {
         this.name = name;
     }
 
-    public String getReview() {
-        return review;
+    @OneToMany
+    public Set<Review> getReviews() {
+        return reviews;
     }
 
-    public void setReview(String review) {
-        this.review = review;
+    public void setReviews(Set<Review> reviews) {
+        this.reviews = reviews;
     }
 }
