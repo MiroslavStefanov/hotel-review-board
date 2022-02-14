@@ -42,7 +42,7 @@ public class HotelProfile {
         this.name = name;
     }
 
-    @OneToMany
+    @OneToMany(mappedBy = "hotel")
     public Set<Review> getReviews() {
         return reviews;
     }
