@@ -8,6 +8,8 @@ import com.fmi.hotelreviewboard.repository.HotelProfileRepository;
 import com.fmi.hotelreviewboard.repository.ReviewRepository;
 import com.fmi.hotelreviewboard.repository.UserRepository;
 import com.fmi.hotelreviewboard.service.HotelProfileService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -32,6 +34,11 @@ public class HotelProfileServiceImpl implements HotelProfileService {
     }
 
     @Override
+    public Page<HotelProfile> searchProfiles(String nameLike, Pageable pageable) {
+        return profileRepository.findByNameContaining(nameLike, pageable);
+    }
+
+    @Override
     public HotelProfile addProfile(HotelProfile profile) {
         return profileRepository.save(profile);
     }
@@ -49,7 +56,7 @@ public class HotelProfileServiceImpl implements HotelProfileService {
     }
 
     @Override
-    public void addReview(Principal principal, String hotelId, String content) {
+    public String addReview(Principal principal, String hotelId, String content) {
         User user = userRepository.findFirstByUsername(principal.getName());
         HotelProfile hotel = profileRepository.findById(hotelId).orElseThrow();
         Review review = new Review();
@@ -59,7 +66,8 @@ public class HotelProfileServiceImpl implements HotelProfileService {
 
         //TODO: rating
 
-        reviewRepository.save(review);
+        Review savedReview = reviewRepository.save(review);
+        return savedReview.getId();
     }
 
 }

@@ -1,8 +1,12 @@
 package com.fmi.hotelreviewboard.controller;
 
 import com.fmi.hotelreviewboard.model.entity.HotelProfile;
+import com.fmi.hotelreviewboard.model.view.HotelProfileViewModel;
 import com.fmi.hotelreviewboard.service.HotelProfileService;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -51,9 +55,11 @@ public class HotelController extends BaseController {
         hotelProfileService.deleteProfile(id);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/details/{id}")
     public ModelAndView details(@PathVariable("id") String id) {
-        return super.view("hotels/details", hotelProfileService.getProfile(id));
+        HotelProfile profile = hotelProfileService.getProfile(id);
+        HotelProfileViewModel viewModel = modelMapper.map(profile, HotelProfileViewModel.class);
+        return super.view("hotels/details", viewModel);
     }
 
     @GetMapping()
@@ -62,8 +68,15 @@ public class HotelController extends BaseController {
     }
 
     @PostMapping("/review/{id}")
-    public ModelAndView addReview(@PathVariable("id") String id, @RequestBody String content, Principal principal) {
-        hotelProfileService.addReview(principal, id, content);
-        return super.view("hotels/details", hotelProfileService.getProfile(id));
+    @ResponseBody
+    public String addReview(@PathVariable("id") String id, @RequestBody String content, Principal principal) {
+        return hotelProfileService.addReview(principal, id, content);
+//        return super.view("hotels/details", hotelProfileService.getProfile(id));
+    }
+
+    @GetMapping("/search")
+    @ResponseBody
+    public Page<HotelProfile> search(@Param("name") String name, Pageable pageable) {
+        return hotelProfileService.searchProfiles(name, pageable);
     }
 }

@@ -1,7 +1,7 @@
 <div xmlns:th="http://www.thymeleaf.org"
     class="jumbotron-fluid pt-5">
 
-    <th:block th:include="fragments/hotel/hotel-search"  th:with="allDestinations=${model}"></th:block>
+    <th:block th:include="fragments/hotel/hotel-search"  th:with="hotelNames=${model}"></th:block>
 
     <div hidden>
         <div id="map"></div>

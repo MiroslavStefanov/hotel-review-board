@@ -1,14 +1,10 @@
-function createRequest(hotelId, userId, successCallback) {
-    let request = {
-        hotel: '/hotel_api/' + hotelId,
-        user: '/users/' + userId,
-    };
+function createRequest(hotelId, review, successCallback) {
     $.ajax({
         type: 'POST',
-        url: '/hotelRequests',
+        url: '/hotels/review/' + hotelId,
         dataType: 'json',
-        contentType: 'application/json',
-        data: JSON.stringify(request),
+        contentType: 'text/plain',
+        data: review,
         beforeSend: (request) => {
             let _tc = $("meta[name='_csrf']").attr("content");
             let _hc = $("meta[name='_csrf_header']").attr("content");

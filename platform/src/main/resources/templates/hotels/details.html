@@ -2,83 +2,71 @@
     <div class="jumbotron-fluid p-3">
         <h1 class="text-center">hotel Details</h1>
     </div>
-    <!--/*@thymesVar id="model" type="com.fmi.hotelreviewboard.domain.models.view.hotelDetailsViewModel"*/-->
+    <!--/*@thymesVar id="model" type="com.fmi.hotelreviewboard.model.view.HotelProfileViewModel"*/-->
     <div id="body" th:object="${model}">
         <div class="container mt-3 mb-5" id="information">
             <h2 class="text-center text-blue2">Information</h2>
             <div class="row">
                 <div class="col-lg-6 col-md-8 col-sm-12">
-                    <h3 class="text-blue2 d-flex">From: <a th:href="@{/destinations/details/{id}(id=*{fromDestination.id})}" class="text-blue1 pl-2 text-weight-light" th:text="*{fromDestination.name}"></a>
+                    <h3 class="text-blue2 d-flex">Hotel: <p class="text-blue1 pl-2 text-weight-light" th:text="*{name}"></p>
                         <i
                                 class="fa fa-map-marked-alt text-red ml-auto clickable"
                                 data-toggle="modal"
                                 data-target="#modal-map"
-                                data-th-attr="data-lat=*{fromDestination.latitude}, data-lng=*{fromDestination.longitude}, data-title=*{fromDestination.name}">
+                                data-th-attr="data-lat=*{latitude}, data-lng=*{longitude}, data-title=*{name}">
                         </i>
                     </h3>
-                    <h3 class="text-blue2 d-flex">To: <a th:href="@{/destinations/details/{id}(id=*{toDestination.id})}" class="text-blue1 pl-2 text-weight-light" th:text="*{toDestination.name}"></a>
-                        <i
-                                class="fa fa-map-marked-alt text-red ml-auto clickable"
-                                data-toggle="modal"
-                                data-target="#modal-map"
-                                data-th-attr="data-lat=*{toDestination.latitude}, data-lng=*{toDestination.longitude}, data-title=*{toDestination.name}">
-                        </i>
-                    </h3>
-                    <h3 class="text-blue2">Departure at: <span class="text-blue1" th:text="*{#temporals.format(departureTime, 'dd-MMM-yyyy hh:mm a')}"></span></h3>
-                    <h3 class="text-blue2">Creator:
-                        <a class="text-blue1" th:href="@{/profile/{username}(username=*{publisher.username})}" th:text="*{publisher.fullName}"></a>
-                    </h3>
-                    <small class="text-muted" th:text="|Published at *{#temporals.format(publishedAt)}|"></small>
+<!--                    <h3 class="text-blue2">Departure at: <span class="text-blue1" th:text="*{#temporals.format(departureTime, 'dd-MMM-yyyy hh:mm a')}"></span></h3>-->
+<!--                    <h3 class="text-blue2">Creator:-->
+<!--                        <a class="text-blue1" th:href="@{/profile/{username}(username=*{publisher.username})}" th:text="*{publisher.fullName}"></a>-->
+<!--                    </h3>-->
+<!--                    <small class="text-muted" th:text="|Published at *{#temporals.format(publishedAt)}|"></small>-->
                 </div>
-                <div class="col-lg-3 col-md-4 col-sm-9 d-flex mx-auto mt-4"
-                     th:if="${#authentication.name == model.publisher.username || #authorization.expr('hasAnyRole(''ADMIN'', ''ROOT'')')}">
-                    <div class="container w-100 mt-auto pt-1" id="actions">
-                        <h2 class="text-center text-blue2">Actions</h2>
-                        <div class="d-flex justify-content-center">
-                            <a th:href="@{/templates/hotels/{id}/edit(id=*{id})}" class="d-inline-block btn btn-blue m-3">Edit</a>
-                            <a th:href="@{/templates/hotels/{id}/delete(id=*{id})}" class="d-inline-block btn btn-red m-3">Delete</a>
-                        </div>
-                    </div>
-                </div>
+<!--                <div class="col-lg-3 col-md-4 col-sm-9 d-flex mx-auto mt-4"-->
+<!--                     th:if="${#authorization.expr('hasAnyRole(''ADMIN'', ''ROOT'')')}">-->
+<!--                    <div class="container w-100 mt-auto pt-1" id="actions">-->
+<!--                        <h2 class="text-center text-blue2">Actions</h2>-->
+<!--                        <div class="d-flex justify-content-center">-->
+<!--                            <a th:href="@{/templates/hotels/{id}/edit(id=*{id})}" class="d-inline-block btn btn-blue m-3">Edit</a>-->
+<!--                            <a th:href="@{/templates/hotels/{id}/delete(id=*{id})}" class="d-inline-block btn btn-red m-3">Delete</a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
         </div>
 
-        <div class="container scrollable-horizontal my-5" id="attendants">
-            <h3>Attendants</h3>
-            <div th:each="attendant : *{attendants}" class="d-inline-block mx-1">
-                <button
-                        th:if="${#strings.equals(attendant.username, model.publisher.username) == false && (#strings.equals(model.publisher.username, #authentication.name) || #authorization.expr('hasRole(''ADMIN'')') || #strings.equals(attendant.username, #authentication.name))}"
-                        type="button" class="close"
-                        aria-label="Remove"
-                        data-th-attr="data-attendant-id=${attendant.id}"
-                        onclick="remove(this)">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <a th:href="@{/profile/{username}(username=${attendant.username})}" class="d-block">
-                    <div class="d-flex justify-content-center">
-                        <img th:src="${attendant.profilePictureLink}" width="64", height="64" class="rounded-circle"/>
-                    </div>
-                    <div>
-                        <p class="text-muted text-center m-0" th:text="${attendant.fullName}"></p>
-                    </div>
-                </a>
-            </div>
-        </div>
+<!--        <div class="container scrollable-horizontal my-5" id="attendants">-->
+<!--            <h3>Attendants</h3>-->
+<!--            <div th:each="attendant : *{attendants}" class="d-inline-block mx-1">-->
+<!--                <button-->
+<!--                        th:if="${#strings.equals(attendant.username, model.publisher.username) == false && (#strings.equals(model.publisher.username, #authentication.name) || #authorization.expr('hasRole(''ADMIN'')') || #strings.equals(attendant.username, #authentication.name))}"-->
+<!--                        type="button" class="close"-->
+<!--                        aria-label="Remove"-->
+<!--                        data-th-attr="data-attendant-id=${attendant.id}"-->
+<!--                        onclick="remove(this)">-->
+<!--                    <span aria-hidden="true">&times;</span>-->
+<!--                </button>-->
+<!--                <a th:href="@{/profile/{username}(username=${attendant.username})}" class="d-block">-->
+<!--                    <div class="d-flex justify-content-center">-->
+<!--                        <img th:src="${attendant.profilePictureLink}" width="64", height="64" class="rounded-circle"/>-->
+<!--                    </div>-->
+<!--                    <div>-->
+<!--                        <p class="text-muted text-center m-0" th:text="${attendant.fullName}"></p>-->
+<!--                    </div>-->
+<!--                </a>-->
+<!--            </div>-->
+<!--        </div>-->
 
-        <div class="container my-5" id="description" th:if="*{description != null && description.length() > 0}">
-            <h2 class="text-blue2">Description</h2>
-            <p class="text-justify text-blue2" th:text="*{description}"></p>
-        </div>
+<!--        <div class="container my-5" id="description" th:if="*{description != null && description.length() > 0}">-->
+<!--            <h2 class="text-blue2">Description</h2>-->
+<!--            <p class="text-justify text-blue2" th:text="*{description}"></p>-->
+<!--        </div>-->
 
-        <th:block
-                th:with="hasRequested = ${#sets.contains(model.allRequestingUsernames, #authentication.name)}, hasAttended = ${#sets.contains(model.allParticipatedUsernames, #authentication.name)}"
-        >
-            <div class="p-4" th:if="${!hasAttended}">
-                <div class="container d-flex justify-content-end" th:if="${!hasRequested}">
-                    <button type="submit" id="send-request-btn" class="btn btn-blue">Participate</button>
-                </div>
-                <div class="container d-flex justify-content-end" th:if="${hasRequested}">
-                    <button type="submit" id="cancel-request-btn" class="btn btn-blue">Cancel Request</button>
+        <th:block>
+<!--                th:with="hasRequested = ${#sets.contains(model.allRequestingUsernames, #authentication.name)}, hasAttended = ${#sets.contains(model.allParticipatedUsernames, #authentication.name)}"-->
+            <div class="p-4">
+                <div class="container d-flex justify-content-end">
+                    <button type="submit" id="send-request-btn" class="btn btn-blue">Post Review</button>
                 </div>
             </div>
         </th:block>
@@ -114,25 +102,14 @@
     $(document).ready(() => {
         $('#send-request-btn').click(() => {
             let hotelId = [[${model.id}]];
-            let userId = [[${currentUserId}]];
             let callback = () => {
                 let requestBtn = $('#send-request-btn');
-                requestBtn.text('Request sent');
+                requestBtn.text('Posting');
                 requestBtn.prop('disabled', true);
             };
-            createRequest(hotelId, userId, callback);
+            createRequest(hotelId, "details.html: TEST", callback);
         });
 
-        $('#cancel-request-btn').click(() => {
-            let requestId = [[${model.getRequestByUsername(#authentication.name)}]];
-            let callback = () => {
-                let requestBtn = $('#cancel-request-btn');
-                requestBtn.hide();
-            };
-            if(requestId !== null) {
-                deleteRequest(requestId, callback);
-            }
-        });
     });
 
     $('#modal-map').on('show.bs.modal', (event) => {

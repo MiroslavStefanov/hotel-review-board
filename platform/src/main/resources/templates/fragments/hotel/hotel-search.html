@@ -1,25 +1,13 @@
-<h2 class="text-center text-blue1 p-3">Find your next hotel</h2>
+<h2 class="text-center text-blue1 p-3">Find hotel</h2>
 
 <div class="container mt-3" xmlns:th="http://www.thymeleaf.org">
-    <form id="hotel-search-from" autocomplete="off" class="form-horizontal" method="post" th:action="@{/templates/hotels}">
+    <form id="hotel-search-from" autocomplete="off" class="form-horizontal" method="post" th:action="@{/hotels}">
             <table class="d-flex justify-content-center">
                 <tbody class="w-100">
                 <tr class="row d-flex justify-content-center">
                     <td class="col-md-3 col-sm-8 border pt-2">
-                        <h6 class="h-25">From</h6>
-                        <input id="from" name="fromDestination" class="no-border w-100" type="text"/>
-                    </td>
-                    <td class="col-md-3 col-sm-8 border pt-2">
-                        <h6>To</h6>
-                        <input id="to" name="toDestination" class="no-border w-100" type="text"/>
-                    </td>
-                    <td class="col-md-3 col-sm-8 border pt-2">
-                        <h6>Departure after</h6>
-                        <input id="when-from" name="fromDate" class="no-border" type="datetime-local"/>
-                    </td>
-                    <td class="col-md-3 col-sm-8 border pt-2">
-                        <h6>Departure before</h6>
-                        <input id="when-to" name="toDate" class="no-border" type="datetime-local"/>
+                        <h6 class="h-25">Name</h6>
+                        <input id="name" name="name" class="no-border w-100" type="text"/>
                     </td>
                 </tr>
                 </tbody>
@@ -31,30 +19,26 @@
     </form>
 </div>
 <script xmlns:th="http://www.thymeleaf.org" th:inline="javascript">
-    autocomplete(document.getElementById("from"), [[${allDestinations}]]);
-    autocomplete(document.getElementById("to"), [[${allDestinations}]]);
+    autocomplete(document.getElementById("name"), [[${hotelNames}]]);
     $('#hotel-search-from').submit((event) => {
         event.preventDefault();
-        let hotelPageHandler = new hotelPageHandler();
-        hotelPageHandler.arguments.sDest = $('#from').val();
-        hotelPageHandler.arguments.eDest = $('#to').val();
-        hotelPageHandler.arguments.fDate = $('#when-from').val();
-        hotelPageHandler.arguments.tDate = $('#when-to').val();
+        const hotelPageHandler = new HotelPageHandler('/hotels/search', rowResponseHandler);
+        hotelPageHandler.arguments.name = $('#name').val();
 
-        let pageService = new PageService(hotelPageHandler);
-        pageService.handlePage();
+        const pageService = new PageService(hotelPageHandler);
+        hotelPageHandler.handlePage(pageService, 0);
 
-        $("#prev").click(pageService.prev);
+        $("#prev").click(() => {pageService.prev(); hotelPageHandler.handlePage(pageService);})
 
         let leftEllipsis = $("#left-ellipsis");
-        leftEllipsis.click(() => pageService.selectPage(leftEllipsis));
+        leftEllipsis.click(() => {pageService.selectPage(leftEllipsis); hotelPageHandler.handlePage(pageService);});
 
         let current = $("#current");
-        current.click(() => pageService.selectPage(current));
+        current.click(() => {pageService.selectPage(current); hotelPageHandler.handlePage(pageService);});
 
         let rightEllipsis = $("#right-ellipsis");
-        rightEllipsis.click(() => pageService.selectPage(rightEllipsis));
+        rightEllipsis.click(() => {pageService.selectPage(rightEllipsis); hotelPageHandler.handlePage(pageService);});
 
-        $("#next").click(pageService.next);
+        $("#next").click(() => {pageService.next(); hotelPageHandler.handlePage(pageService);});
     });
 </script>

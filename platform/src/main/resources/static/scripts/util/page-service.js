@@ -1,10 +1,9 @@
 class PageService {
-    constructor(pageHandler) {
+    constructor() {
             this.pageButtonCount = 8;
             this.page = 0;
             this.size = 0;
             this.currentButtonClass = 'btn-blue';
-            this.pageHandler = pageHandler;
     }
 
     setSize(size) {
@@ -83,18 +82,14 @@ class PageService {
         elem.attr('hidden', parseInt(button.text()) >= this.size);
     }
 
-    handlePage() {
-        this.pageHandler.handlePage(this, this.page);
-    }
-
     prev() {
         this.page--;
-        this.handlePage();
+        // this.pageHandler.handlePage(this, this.page);
     }
 
     next() {
         this.page++;
-        this.handlePage();
+        // this.pageHandler.handlePage(this, this.page);
     }
 
     handleEllipsis(id) {
@@ -111,6 +106,6 @@ class PageService {
         } else {
             this.page = parseInt(parseInt(elem.innerHTML) - 1);
         }
-        this.handlePage();
+        // this.pageHandler.handlePage(this, this.page);
     }
 }
