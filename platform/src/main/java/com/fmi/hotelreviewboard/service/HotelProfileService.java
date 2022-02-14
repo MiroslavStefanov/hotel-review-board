@@ -9,7 +9,7 @@ import java.util.Collection;
 
 public interface HotelProfileService {
 
-    Collection<HotelProfile> getProfiles();
+    Collection<String> getAllNames();
 
     Page<HotelProfile> searchProfiles(String nameLike, Pageable pageable);
 

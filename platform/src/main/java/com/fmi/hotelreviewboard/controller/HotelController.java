@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Collection;
 
 @Controller
 @RequestMapping("/hotels")
@@ -64,7 +65,8 @@ public class HotelController extends BaseController {
 
     @GetMapping()
     public ModelAndView all() {
-        return super.view("hotels/all", null);
+        Collection<String> allHotelNames = hotelProfileService.getAllNames();
+        return super.view("hotels/all", allHotelNames);
     }
 
     @PostMapping("/review/{id}")

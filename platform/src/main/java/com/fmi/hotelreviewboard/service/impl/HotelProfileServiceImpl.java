@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Service
 public class HotelProfileServiceImpl implements HotelProfileService {
@@ -29,8 +30,10 @@ public class HotelProfileServiceImpl implements HotelProfileService {
     }
 
     @Override
-    public Collection<HotelProfile> getProfiles() {
-        return profileRepository.findAll();
+    public Collection<String> getAllNames() {
+        return profileRepository.findAll().stream()
+                .map(HotelProfile::getName)
+                .collect(Collectors.toList());
     }
 
     @Override
