@@ -4,6 +4,7 @@ class PageService {
             this.page = 0;
             this.size = 0;
             this.currentButtonClass = 'btn-blue';
+            this.buttons = [];
     }
 
     setSize(size) {
@@ -11,101 +12,99 @@ class PageService {
         this.processButtons();
     }
 
-    setCurrentButtonClass(className) {
-        this.currentButtonClass = className;
-    }
-
     initButtons(button) {
-        button.text('1');
-        let lastButton = button;
-        let newButton;
-        for (let i = 2; i <= this.pageButtonCount && i <= this.size; i++) {
-            newButton = lastButton.clone();
-            newButton.text(i.toString());
-            lastButton.after(newButton);
-            lastButton = newButton;
+        this.buttons = [];
+        for (let i = 1; i <= this.pageButtonCount && i <= this.size; i++) {
+            const newId = '#current-'+i.toString();
+            button.attr('id', newId);
+            button.text(i.toString());
+            button.click(({id: newId}), (event) => this.selectPage(event.data.id));
+
+            this.buttons.push(button);
+            if(i < this.pageButtonCount && i < this.size) {
+                let nextButton = button.clone();
+                button.after(nextButton)
+                button = nextButton;
+            }
         }
     }
 
-    updateButtons(buttons){
-        let button;
+    updateButtons(){
         let stride = this.pageButtonCount;
         let page = this.page;
-        let className = this.currentButtonClass;
+        const className = this.currentButtonClass;
         let size = this.size;
         let update = 0;
 
-        button = buttons.first();
-        if(this.page < parseInt(button.text())-1)
+        const firstPage = parseInt(this.buttons[0].text()) - 1;
+        if(this.page < firstPage)
             update = -1;
 
-        button = buttons.last();
-        if(this.page > parseInt(button.text())-1)
+        const lastPage = parseInt(this.buttons[this.size - 1].text()) - 1;
+        if(this.page > lastPage)
             update = 1;
 
-        buttons.each(function(){
-            let num = parseInt($(this).text());
+        this.buttons.forEach(b => {
+            let num = parseInt(b.text());
             num += update*stride;
 
             if(num === page+1){
-                $(this).addClass(className);
+                b.addClass(className);
             } else {
-                $(this).removeClass(className);
+                b.removeClass(className);
             }
 
-            $(this).text(num.toString());
-            $(this).attr('hidden', num > size);
+            b.text(num.toString());
+            b.attr('hidden', num > size);
         });
     }
 
     processButtons() {
-        let bar = $('#pagination-bar');
-        let buttons = bar.find('.btn-page');
-        let button = buttons.last();
-        let elem;
+        // let bar = $('#pagination-bar');
+        // let buttons = bar.find('.btn-page');
+        // let button = buttons.last();
+        // let elem;
 
-        if(button.text() === '') {
+        const button = $('#current');
+        if(button.length > 0) {
             this.initButtons(button);
-            buttons = bar.find('.btn-page');
         }
-        this.updateButtons(buttons);
+        this.updateButtons();
 
+        let bar = $('#pagination-bar');
         bar.find('#prev').attr('disabled', this.page <= 0);
         bar.find('#next').attr('disabled', this.page >= this.size-1);
 
-        button = buttons.first();
-        elem = bar.find('#left-ellipsis');
-        elem.attr('hidden', parseInt(button.text()) <= 1);
+        const minPage = parseInt(this.buttons[0].text());
+        let leftEllipsis = bar.find('#left-ellipsis');
+        leftEllipsis.attr('hidden', minPage <= 1);
 
-        button = buttons.last();
-        elem = bar.find('#right-ellipsis');
-        elem.attr('hidden', parseInt(button.text()) >= this.size);
+        const maxPage = parseInt(this.buttons[this.size - 1].text());
+        let rightEllipsis = bar.find('#right-ellipsis');
+        rightEllipsis.attr('hidden', maxPage >= this.size);
     }
 
     prev() {
         this.page--;
-        // this.pageHandler.handlePage(this, this.page);
     }
 
     next() {
         this.page++;
-        // this.pageHandler.handlePage(this, this.page);
     }
 
     handleEllipsis(id) {
-        let bar = $('#pagination-bar');
         if(id === 'left-ellipsis')
-            this.page = parseInt(bar.find('.btn-page').first().text())-2;
+            this.page = parseInt(this.buttons[0].text())-2;
         else if(id === 'right-ellipsis')
-            this.page = parseInt(bar.find('.btn-page').last().text());
+            this.page = parseInt(this.buttons[this.size - 1].text());
     }
 
-    selectPage(elem) {
-        if(elem.innerHTML === '...'){
-            this.handleEllipsis(elem.id);
+    selectPage(buttonId) {
+        let button = $(buttonId);
+        if(button.innerHTML === '...'){
+            this.handleEllipsis(button);
         } else {
-            this.page = parseInt(parseInt(elem.innerHTML) - 1);
+            this.page = parseInt(button.innerHTML) - 1;
         }
-        // this.pageHandler.handlePage(this, this.page);
     }
 }
