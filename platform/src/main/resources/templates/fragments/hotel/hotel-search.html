@@ -25,8 +25,8 @@
         const hotelPageHandler = new HotelPageHandler('/hotels/search', rowResponseHandler);
         hotelPageHandler.arguments.name = $('#name').val();
 
-        const pageService = new PageService(hotelPageHandler);
-        hotelPageHandler.handlePage(pageService, 0);
+        const pageService = new PageService();
+        hotelPageHandler.handlePage(pageService);
 
         $("#prev").click(() => {pageService.prev(); hotelPageHandler.handlePage(pageService);})
 

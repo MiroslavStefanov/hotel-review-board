@@ -73,4 +73,10 @@ public class HotelProfileServiceImpl implements HotelProfileService {
         return savedReview.getId();
     }
 
+    @Override
+    public Page<Review> getReviews(String hotelId, Pageable pageable) {
+        HotelProfile hotel = profileRepository.findById(hotelId).orElseThrow();
+        return reviewRepository.findByHotel(hotel, pageable);
+    }
+
 }

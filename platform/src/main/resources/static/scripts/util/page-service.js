@@ -14,7 +14,7 @@ class PageService {
 
     initButtons(button) {
         this.buttons = [];
-        for (let i = 1; i <= this.pageButtonCount && i <= this.size; i++) {
+        for (let i = 1; i <= this.buttonsCount(); i++) {
             const newId = '#current-'+i.toString();
             button.attr('id', newId);
             button.text(i.toString());
@@ -40,7 +40,7 @@ class PageService {
         if(this.page < firstPage)
             update = -1;
 
-        const lastPage = parseInt(this.buttons[this.size - 1].text()) - 1;
+        const lastPage = parseInt(this.buttons[this.buttonsCount() - 1].text()) - 1;
         if(this.page > lastPage)
             update = 1;
 
@@ -69,6 +69,10 @@ class PageService {
         if(button.length > 0) {
             this.initButtons(button);
         }
+        if(this.buttons.length === 0) {
+            return;
+        }
+
         this.updateButtons();
 
         let bar = $('#pagination-bar');
@@ -79,7 +83,7 @@ class PageService {
         let leftEllipsis = bar.find('#left-ellipsis');
         leftEllipsis.attr('hidden', minPage <= 1);
 
-        const maxPage = parseInt(this.buttons[this.size - 1].text());
+        const maxPage = parseInt(this.buttons[this.buttonsCount() - 1].text());
         let rightEllipsis = bar.find('#right-ellipsis');
         rightEllipsis.attr('hidden', maxPage >= this.size);
     }
@@ -96,7 +100,7 @@ class PageService {
         if(id === 'left-ellipsis')
             this.page = parseInt(this.buttons[0].text())-2;
         else if(id === 'right-ellipsis')
-            this.page = parseInt(this.buttons[this.size - 1].text());
+            this.page = parseInt(this.buttons[this.buttonsCount() - 1].text());
     }
 
     selectPage(buttonId) {
@@ -106,5 +110,12 @@ class PageService {
         } else {
             this.page = parseInt(button.innerHTML) - 1;
         }
+    }
+
+    buttonsCount() {
+        if(this.size < this.pageButtonCount) {
+            return this.size;
+        }
+        return this.pageButtonCount;
     }
 }

@@ -2,6 +2,7 @@ package com.fmi.hotelreviewboard.controller;
 
 import com.fmi.hotelreviewboard.model.entity.HotelProfile;
 import com.fmi.hotelreviewboard.model.view.HotelProfileViewModel;
+import com.fmi.hotelreviewboard.model.view.ReviewViewModel;
 import com.fmi.hotelreviewboard.service.HotelProfileService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/hotels")
@@ -69,16 +71,28 @@ public class HotelController extends BaseController {
         return super.view("hotels/all", allHotelNames);
     }
 
+    @GetMapping("/search")
+    @ResponseBody
+    public Page<HotelProfileViewModel> search(@Param("name") String name, Pageable pageable) {
+        return hotelProfileService.searchProfiles(name, pageable)
+                .map(h -> modelMapper.map(h, HotelProfileViewModel.class));
+    }
+
     @PostMapping("/review/{id}")
     @ResponseBody
-    public String addReview(@PathVariable("id") String id, @RequestBody String content, Principal principal) {
-        return hotelProfileService.addReview(principal, id, content);
+    public String addReview(@PathVariable("id") String hotelId, @RequestBody String content, Principal principal) {
+        return hotelProfileService.addReview(principal, hotelId, content);
 //        return super.view("hotels/details", hotelProfileService.getProfile(id));
     }
 
-    @GetMapping("/search")
+    @GetMapping("/review/{id}")
     @ResponseBody
-    public Page<HotelProfile> search(@Param("name") String name, Pageable pageable) {
-        return hotelProfileService.searchProfiles(name, pageable);
+    public Page<ReviewViewModel> getReviews(@PathVariable("id") String hotelId, Pageable pageable) {
+        return hotelProfileService.getReviews(hotelId, pageable)
+                .map(r -> {
+                    ReviewViewModel model = modelMapper.map(r, ReviewViewModel.class);
+                    model.setScore((int) Math.floor(Math.random()*10+1));
+                    return model;
+                });
     }
 }

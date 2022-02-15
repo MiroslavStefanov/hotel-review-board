@@ -1,75 +1,39 @@
 <div id="content" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <div class="jumbotron-fluid p-3">
-        <h1 class="text-center">hotel Details</h1>
+        <h1 class="text-center" th:text="${model.name}"></h1>
     </div>
     <!--/*@thymesVar id="model" type="com.fmi.hotelreviewboard.model.view.HotelProfileViewModel"*/-->
     <div id="body" th:object="${model}">
         <div class="container mt-3 mb-5" id="information">
-            <h2 class="text-center text-blue2">Information</h2>
             <div class="row">
-                <div class="col-lg-6 col-md-8 col-sm-12">
-                    <h3 class="text-blue2 d-flex">Hotel: <p class="text-blue1 pl-2 text-weight-light" th:text="*{name}"></p>
-                        <i
-                                class="fa fa-map-marked-alt text-red ml-auto clickable"
-                                data-toggle="modal"
-                                data-target="#modal-map"
-                                data-th-attr="data-lat=*{latitude}, data-lng=*{longitude}, data-title=*{name}">
-                        </i>
-                    </h3>
-<!--                    <h3 class="text-blue2">Departure at: <span class="text-blue1" th:text="*{#temporals.format(departureTime, 'dd-MMM-yyyy hh:mm a')}"></span></h3>-->
-<!--                    <h3 class="text-blue2">Creator:-->
-<!--                        <a class="text-blue1" th:href="@{/profile/{username}(username=*{publisher.username})}" th:text="*{publisher.fullName}"></a>-->
-<!--                    </h3>-->
-<!--                    <small class="text-muted" th:text="|Published at *{#temporals.format(publishedAt)}|"></small>-->
+                <div class="col-4">
+                    <div class="list-group" id="list-tab" role="tablist">
+                        <a class="list-group-item list-group-item-action" id="tabPrototype" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Home</a>
+                    </div>
                 </div>
-<!--                <div class="col-lg-3 col-md-4 col-sm-9 d-flex mx-auto mt-4"-->
-<!--                     th:if="${#authorization.expr('hasAnyRole(''ADMIN'', ''ROOT'')')}">-->
-<!--                    <div class="container w-100 mt-auto pt-1" id="actions">-->
-<!--                        <h2 class="text-center text-blue2">Actions</h2>-->
-<!--                        <div class="d-flex justify-content-center">-->
-<!--                            <a th:href="@{/templates/hotels/{id}/edit(id=*{id})}" class="d-inline-block btn btn-blue m-3">Edit</a>-->
-<!--                            <a th:href="@{/templates/hotels/{id}/delete(id=*{id})}" class="d-inline-block btn btn-red m-3">Delete</a>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
+                <div class="col-8">
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="reviewPrototype" role="tabpanel" aria-labelledby="tabReference">...</div>
+                    </div>
+                </div>
+                <th:block th:include="fragments/util/pagination-bar"></th:block>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group shadow-textarea">
+                        <label for="review-input">Write review</label>
+                        <textarea class="form-control z-depth-1" id="review-input" rows="3" placeholder="Your review..."></textarea>
+                    </div>
+                    <th:block>
+                        <div class="p-4">
+                            <div class="container d-flex justify-content-end">
+                                <button type="submit" id="send-request-btn" class="btn btn-blue">Post Review</button>
+                            </div>
+                        </div>
+                    </th:block>
+                </div>
             </div>
         </div>
-
-<!--        <div class="container scrollable-horizontal my-5" id="attendants">-->
-<!--            <h3>Attendants</h3>-->
-<!--            <div th:each="attendant : *{attendants}" class="d-inline-block mx-1">-->
-<!--                <button-->
-<!--                        th:if="${#strings.equals(attendant.username, model.publisher.username) == false && (#strings.equals(model.publisher.username, #authentication.name) || #authorization.expr('hasRole(''ADMIN'')') || #strings.equals(attendant.username, #authentication.name))}"-->
-<!--                        type="button" class="close"-->
-<!--                        aria-label="Remove"-->
-<!--                        data-th-attr="data-attendant-id=${attendant.id}"-->
-<!--                        onclick="remove(this)">-->
-<!--                    <span aria-hidden="true">&times;</span>-->
-<!--                </button>-->
-<!--                <a th:href="@{/profile/{username}(username=${attendant.username})}" class="d-block">-->
-<!--                    <div class="d-flex justify-content-center">-->
-<!--                        <img th:src="${attendant.profilePictureLink}" width="64", height="64" class="rounded-circle"/>-->
-<!--                    </div>-->
-<!--                    <div>-->
-<!--                        <p class="text-muted text-center m-0" th:text="${attendant.fullName}"></p>-->
-<!--                    </div>-->
-<!--                </a>-->
-<!--            </div>-->
-<!--        </div>-->
-
-<!--        <div class="container my-5" id="description" th:if="*{description != null && description.length() > 0}">-->
-<!--            <h2 class="text-blue2">Description</h2>-->
-<!--            <p class="text-justify text-blue2" th:text="*{description}"></p>-->
-<!--        </div>-->
-
-        <th:block>
-<!--                th:with="hasRequested = ${#sets.contains(model.allRequestingUsernames, #authentication.name)}, hasAttended = ${#sets.contains(model.allParticipatedUsernames, #authentication.name)}"-->
-            <div class="p-4">
-                <div class="container d-flex justify-content-end">
-                    <button type="submit" id="send-request-btn" class="btn btn-blue">Post Review</button>
-                </div>
-            </div>
-        </th:block>
     </div>
 
     <div class="modal fade" id="modal-map" tabindex="-1" role="dialog" aria-labelledby="map-title" aria-hidden="true">
@@ -88,28 +52,125 @@
         </div>
     </div>
 </div>
-<script xmlns:th="http://www.w3.org/1999/xhtml" th:src="@{/scripts/hotel-request/request-service.js}"></script>
 <script xmlns:th="http://www.w3.org/1999/xhtml" th:src="@{/scripts/util/map-service.js}"></script>
 <script xmlns:th="http://www.thymeleaf.org" th:inline="javascript">
-    function remove(button) {
-        let hotelId = [[${model.id}]];
-        let userId = $(button).data('attendant-id');
-        removeAttendant(hotelId, userId, () => {
-            $(button).parent().remove();
-        })
+
+    function initializePostButton(hotelPageHandler, pageService) {
+        $('#send-request-btn').click(() => {
+            const hotelId = [[${model.id}]];
+            const reviewContent = $('#review-input').val();
+
+            $.ajax({
+                type: 'POST',
+                url: '/hotels/review/' + hotelId,
+                dataType: 'text',
+                contentType: 'text/plain',
+                data: reviewContent,
+                beforeSend: (request) => {
+                    let _tc = $("meta[name='_csrf']").attr("content");
+                    let _hc = $("meta[name='_csrf_header']").attr("content");
+                    request.setRequestHeader(_hc, _tc);
+                },
+                success: (data, textStatus, xhr) => {
+                    hotelPageHandler.handlePageAdditional(pageService, () => {selectReview(data);});
+                    },
+
+                error: (xhr, textStatus, errorThrown) => {console.log(errorThrown);}
+            })
+
+            $('#review-input').prop('disabled', true);
+            $('#send-request-btn').text('Posted');
+            $('#send-request-btn').prop('disabled', true);
+        });
+    }
+
+    function selectReview(reviewId) {
+        const activeTab = $('.active.list-group-item');
+        if(activeTab.length > 0) {
+            activeTab.removeClass('active');
+        }
+
+        const activeReview = $('.active.show');
+        if(activeReview.length > 0) {
+            activeReview.removeClass('active');
+            activeReview.removeClass('show');
+        }
+
+
+        const selectedTab = $("[data-id="+reviewId+"]");
+        if(selectedTab.length > 0) {
+            selectedTab.addClass('active');
+
+            const reviewContent = $("[aria-labelledby="+selectedTab.attr('id')+"]");
+            if(reviewContent.length > 0) {
+                reviewContent.addClass('active');
+                reviewContent.addClass('show');
+            }
+        }
+    }
+
+    function showReview(response) {
+        let tabElement = $('#tabPrototype');
+        tabElement.show();
+        let reviewElement = $('#reviewPrototype');
+        reviewElement.show();
+        response.content.forEach((review, index) => {
+            let currentTab = $('#review-tab-'+index.toString());
+            if(currentTab.length === 0) {
+                currentTab = tabElement.clone();
+            }
+            currentTab.text(review.score.toString());
+            currentTab.attr('id', 'review-tab-'+index.toString());
+            currentTab.attr('href', '#review-'+index.toString());
+            currentTab.attr('data-id', review.id);
+            if(index === 0) {
+                currentTab.addClass('active');
+            }
+            else {
+                currentTab.removeClass('active');
+            }
+            tabElement.after(currentTab);
+            tabElement = currentTab;
+
+            let currentReview = $('#review-'+index.toString());
+            if(currentReview.length === 0) {
+                currentReview = reviewElement.clone();
+            }
+            currentReview.text(review.content);
+            currentReview.attr('id', 'review-'+index.toString());
+            currentReview.attr('aria-labelledby','review-tab-'+index.toString());
+            if(index > 0) {
+                currentReview.removeClass('active');
+                currentReview.removeClass('show');
+            }
+            reviewElement.after(currentReview);
+            reviewElement = currentReview;
+        });
+
+        $('#tabPrototype').hide();
+        $('#reviewPrototype').hide();
+    }
+
+    function initializePagination(hotelPageHandler, pageService) {
+        $("#prev").click(() => {pageService.prev(); hotelPageHandler.handlePage(pageService);})
+
+        let leftEllipsis = $("#left-ellipsis");
+        leftEllipsis.click(() => {pageService.selectPage(leftEllipsis); hotelPageHandler.handlePage(pageService);});
+
+        let rightEllipsis = $("#right-ellipsis");
+        rightEllipsis.click(() => {pageService.selectPage(rightEllipsis); hotelPageHandler.handlePage(pageService);});
+
+        $("#next").click(() => {pageService.next(); hotelPageHandler.handlePage(pageService);});
     }
 
     $(document).ready(() => {
-        $('#send-request-btn').click(() => {
-            let hotelId = [[${model.id}]];
-            let callback = () => {
-                let requestBtn = $('#send-request-btn');
-                requestBtn.text('Posting');
-                requestBtn.prop('disabled', true);
-            };
-            createRequest(hotelId, "details.html: TEST", callback);
-        });
+        const hotelPageHandler = new HotelPageHandler('/hotels/review/'+[[${model.id}]], showReview);
+        hotelPageHandler.arguments.size=5;
+        const pageService = new PageService();
+        hotelPageHandler.handlePage(pageService);
 
+        initializePostButton(hotelPageHandler, pageService);
+        initializePagination(hotelPageHandler, pageService);
     });
 
     $('#modal-map').on('show.bs.modal', (event) => {

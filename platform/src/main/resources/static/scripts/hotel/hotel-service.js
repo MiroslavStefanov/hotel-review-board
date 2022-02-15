@@ -39,4 +39,18 @@ class HotelPageHandler {
             }
         })
     }
+
+    handlePageAdditional(pageService, additionalHandler) {
+        this.arguments.page = pageService.page;
+        let url = this.buildUrl();
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: (data) => {
+                pageService.setSize(data.totalPages);
+                this.responseHandler(data);
+                additionalHandler();
+            }
+        })
+    }
 }
