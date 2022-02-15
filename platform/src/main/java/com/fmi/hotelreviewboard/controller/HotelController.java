@@ -80,10 +80,6 @@ public class HotelController extends BaseController {
     @ResponseBody
     public Page<ReviewViewModel> getReviews(@PathVariable("id") String hotelId, Pageable pageable) {
         return hotelProfileService.getReviews(hotelId, pageable)
-                .map(r -> {
-                    ReviewViewModel model = modelMapper.map(r, ReviewViewModel.class);
-                    model.setScore((int) Math.floor(Math.random()*10+1));
-                    return model;
-                });
+                .map(r -> modelMapper.map(r, ReviewViewModel.class));
     }
 }

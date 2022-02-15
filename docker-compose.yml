@@ -1,19 +1,19 @@
 version: '3.7'
 
-x-minio-common: &minio-common
-  image: quay.io/minio/minio:RELEASE.2022-02-07T08-17-33Z
-  command: server --console-address ":9001" http://minio{1...4}/data{1...2}
-  expose:
-    - "9000"
-    - "9001"
-  environment:
-    MINIO_ROOT_USER: minio
-    MINIO_ROOT_PASSWORD: minio123
-  healthcheck:
-    test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-    interval: 30s
-    timeout: 20s
-    retries: 3
+#x-minio-common: &minio-common
+#  image: quay.io/minio/minio:RELEASE.2022-02-07T08-17-33Z
+#  command: server --console-address ":9001" http://minio{1...4}/data{1...2}
+#  expose:
+#    - "9000"
+#    - "9001"
+#  environment:
+#    MINIO_ROOT_USER: minio
+#    MINIO_ROOT_PASSWORD: minio123
+#  healthcheck:
+#    test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+#    interval: 30s
+#    timeout: 20s
+#    retries: 3
 
 services:
   mysql:
@@ -37,56 +37,79 @@ services:
       - "8080:8080"
     links:
       - mysql
+      - kafka
 
-  minio1:
-    <<: *minio-common
-    hostname: minio1
-    volumes:
-      - data1-1:/data1
-      - data1-2:/data2
-
-  minio2:
-      <<: *minio-common
-      hostname: minio2
-      volumes:
-        - data2-1:/data1
-        - data2-2:/data2
-
-  minio3:
-      <<: *minio-common
-      hostname: minio3
-      volumes:
-        - data3-1:/data1
-        - data3-2:/data2
-
-  minio4:
-      <<: *minio-common
-      hostname: minio4
-      volumes:
-        - data4-1:/data1
-        - data4-2:/data2
-
-  nginx:
-    image: nginx:1.19.2-alpine
-    hostname: nginx
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
     ports:
-      - "9000:9000"
-      - "9001:9001"
-    links:
-      - minio1
-      - minio2
-      - minio3
-      - minio4
+      - "22181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+#  minio1:
+#    <<: *minio-common
+#    hostname: minio1
+#    volumes:
+#      - data1-1:/data1
+#      - data1-2:/data2
+#
+#  minio2:
+#      <<: *minio-common
+#      hostname: minio2
+#      volumes:
+#        - data2-1:/data1
+#        - data2-2:/data2
+#
+#  minio3:
+#      <<: *minio-common
+#      hostname: minio3
+#      volumes:
+#        - data3-1:/data1
+#        - data3-2:/data2
+#
+#  minio4:
+#      <<: *minio-common
+#      hostname: minio4
+#      volumes:
+#        - data4-1:/data1
+#        - data4-2:/data2
+#
+#  nginx:
+#    image: nginx:1.19.2-alpine
+#    hostname: nginx
+#    volumes:
+#      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+#    ports:
+#      - "9000:9000"
+#      - "9001:9001"
+#    links:
+#      - minio1
+#      - minio2
+#      - minio3
+#      - minio4
 
 volumes:
   db-hotel:
-  data1-1:
-  data1-2:
-  data2-1:
-  data2-2:
-  data3-1:
-  data3-2:
-  data4-1:
-  data4-2:
+#  data1-1:
+#  data1-2:
+#  data2-1:
+#  data2-2:
+#  data3-1:
+#  data3-2:
+#  data4-1:
+#  data4-2:

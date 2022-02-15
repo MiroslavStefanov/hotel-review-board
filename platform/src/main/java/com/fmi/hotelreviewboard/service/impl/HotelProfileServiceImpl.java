@@ -10,6 +10,8 @@ import com.fmi.hotelreviewboard.repository.UserRepository;
 import com.fmi.hotelreviewboard.service.HotelProfileService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -24,11 +26,13 @@ public class HotelProfileServiceImpl implements HotelProfileService {
     private final HotelProfileRepository profileRepository;
     private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
+    private final KafkaTemplate<String, String> reviewScoreTemplate;
 
-    public HotelProfileServiceImpl(HotelProfileRepository profileRepository, UserRepository userRepository, ReviewRepository reviewRepository) {
+    public HotelProfileServiceImpl(HotelProfileRepository profileRepository, UserRepository userRepository, ReviewRepository reviewRepository, KafkaTemplate<String, String> reviewScoreTemplate) {
         this.profileRepository = profileRepository;
         this.userRepository = userRepository;
         this.reviewRepository = reviewRepository;
+        this.reviewScoreTemplate = reviewScoreTemplate;
     }
 
     @Override
@@ -70,9 +74,9 @@ public class HotelProfileServiceImpl implements HotelProfileService {
         review.setContent(content);
         review.setPublishedAt(Timestamp.from(Instant.now()));
 
-        //TODO: rating
 
         Review savedReview = reviewRepository.save(review);
+        reviewScoreTemplate.send("review", savedReview.getId());
         return savedReview.getId();
     }
 
@@ -80,6 +84,15 @@ public class HotelProfileServiceImpl implements HotelProfileService {
     public Page<Review> getReviews(String hotelId, Pageable pageable) {
         HotelProfile hotel = profileRepository.findById(hotelId).orElseThrow();
         return reviewRepository.findByHotelOrderByPublishedAtDesc(hotel, pageable);
+    }
+
+    @KafkaListener(
+            topics = "review",
+            containerFactory = "fooKafkaListenerContainerFactory")
+    public void greetingListener(String reviewId) {
+        Review review = reviewRepository.findById(reviewId).orElseThrow();
+        review.setScore((int) Math.floor(Math.random()*10+1));
+        reviewRepository.save(review);
     }
 
 }

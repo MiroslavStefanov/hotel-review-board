@@ -121,7 +121,11 @@
                 currentTab = tabElement.clone();
                 currentTab.attr('id', 'review-tab-'+index.toString());
             }
-            currentTab.text(review.score.toString());
+            if(review.score === null) {
+                currentTab.text('Assessing');
+            } else {
+                currentTab.text(review.score.toString());
+            }
             currentTab.attr('href', '#review-'+index.toString());
             currentTab.attr('data-id', review.id);
             if(index === 0) {
