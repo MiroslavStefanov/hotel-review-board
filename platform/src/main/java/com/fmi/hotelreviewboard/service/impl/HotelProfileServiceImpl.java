@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -66,6 +68,7 @@ public class HotelProfileServiceImpl implements HotelProfileService {
         review.setHotel(hotel);
         review.setPublisher(user);
         review.setContent(content);
+        review.setPublishedAt(Timestamp.from(Instant.now()));
 
         //TODO: rating
 
@@ -76,7 +79,7 @@ public class HotelProfileServiceImpl implements HotelProfileService {
     @Override
     public Page<Review> getReviews(String hotelId, Pageable pageable) {
         HotelProfile hotel = profileRepository.findById(hotelId).orElseThrow();
-        return reviewRepository.findByHotel(hotel, pageable);
+        return reviewRepository.findByHotelOrderByPublishedAtDesc(hotel, pageable);
     }
 
 }

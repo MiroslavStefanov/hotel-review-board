@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 
 @Entity
 public class Review {
@@ -12,6 +13,7 @@ public class Review {
     private User publisher;
     private String content;
     private Integer score;
+    private Timestamp publishedAt;
 
     public Review() {
     }
@@ -64,5 +66,13 @@ public class Review {
 
     public void setScore(Integer score) {
         this.score = score;
+    }
+
+    public Timestamp getPublishedAt() {
+        return publishedAt;
+    }
+
+    public void setPublishedAt(Timestamp publishedAt) {
+        this.publishedAt = publishedAt;
     }
 }

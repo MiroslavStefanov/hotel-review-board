@@ -1,13 +1,17 @@
 class PageService {
-    constructor() {
+    constructor(refresh) {
             this.pageButtonCount = 8;
             this.page = 0;
             this.size = 0;
             this.currentButtonClass = 'btn-blue';
             this.buttons = [];
+            this.refresh = refresh;
     }
 
     setSize(size) {
+        if(this.size < this.pageButtonCount && this.size < size && 0 < this.size) {
+            this.increaseButtons(size);
+        }
         this.size = size;
         this.processButtons();
     }
@@ -15,7 +19,7 @@ class PageService {
     initButtons(button) {
         this.buttons = [];
         for (let i = 1; i <= this.buttonsCount(); i++) {
-            const newId = '#current-'+i.toString();
+            const newId = 'current-'+i.toString();
             button.attr('id', newId);
             button.text(i.toString());
             button.click(({id: newId}), (event) => this.selectPage(event.data.id));
@@ -89,27 +93,36 @@ class PageService {
     }
 
     prev() {
-        this.page--;
+        this.setPage(this.page - 1);
     }
 
     next() {
-        this.page++;
+        this.setPage(this.page + 1);
     }
 
     handleEllipsis(id) {
         if(id === 'left-ellipsis')
-            this.page = parseInt(this.buttons[0].text())-2;
+            this.setPage(parseInt(this.buttons[0].text())-2);
         else if(id === 'right-ellipsis')
-            this.page = parseInt(this.buttons[this.buttonsCount() - 1].text());
+            this.setPage(parseInt(this.buttons[this.buttonsCount() - 1].text()));
     }
 
     selectPage(buttonId) {
-        let button = $(buttonId);
-        if(button.innerHTML === '...'){
-            this.handleEllipsis(button);
-        } else {
-            this.page = parseInt(button.innerHTML) - 1;
+        const button = $('#'+buttonId);
+        if(button.length > 0) {
+            const buttonText = button.text();
+            if(buttonText === '...'){
+                this.handleEllipsis(buttonId);
+            } else {
+                const newPage = parseInt(buttonText) - 1;
+                this.setPage(newPage);
+            }
         }
+    }
+
+    setPage(page) {
+        this.page = page;
+        this.refresh(this);
     }
 
     buttonsCount() {
@@ -118,4 +131,31 @@ class PageService {
         }
         return this.pageButtonCount;
     }
+
+    increaseButtons(newSize) {
+        let lastButton = this.buttons[this.buttonsCount() - 1];
+        for (let i = this.size+1; i <= Math.min(newSize, this.pageButtonCount); i++) {
+            const newId = 'current-'+i.toString();
+            const newButton = lastButton.clone();
+            newButton.attr('id', newId);
+            newButton.text(i.toString());
+            newButton.click(({id: newId}), (event) => this.selectPage(event.data.id));
+
+            this.buttons.push(newButton);
+            lastButton.after(newButton);
+            lastButton = newButton
+        }
+    }
+}
+
+function initializePagination(pageService) {
+    $("#prev").click(pageService, (event) => event.data.prev())
+
+    let leftEllipsis = $("#left-ellipsis");
+    leftEllipsis.click(pageService, (event) => event.data.selectPage(leftEllipsis));
+
+    let rightEllipsis = $("#right-ellipsis");
+    rightEllipsis.click(pageService, (event) => event.data.selectPage(rightEllipsis));
+
+    $("#next").click(pageService, (event) => event.data.next());
 }

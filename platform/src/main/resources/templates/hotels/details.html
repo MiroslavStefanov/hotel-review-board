@@ -72,6 +72,7 @@
                     request.setRequestHeader(_hc, _tc);
                 },
                 success: (data, textStatus, xhr) => {
+                    pageService.setPage(0);
                     hotelPageHandler.handlePageAdditional(pageService, () => {selectReview(data);});
                     },
 
@@ -118,9 +119,9 @@
             let currentTab = $('#review-tab-'+index.toString());
             if(currentTab.length === 0) {
                 currentTab = tabElement.clone();
+                currentTab.attr('id', 'review-tab-'+index.toString());
             }
             currentTab.text(review.score.toString());
-            currentTab.attr('id', 'review-tab-'+index.toString());
             currentTab.attr('href', '#review-'+index.toString());
             currentTab.attr('data-id', review.id);
             if(index === 0) {
@@ -139,7 +140,10 @@
             currentReview.text(review.content);
             currentReview.attr('id', 'review-'+index.toString());
             currentReview.attr('aria-labelledby','review-tab-'+index.toString());
-            if(index > 0) {
+            if(index === 0) {
+                currentReview.addClass('active');
+                currentReview.addClass('show');
+            } else {
                 currentReview.removeClass('active');
                 currentReview.removeClass('show');
             }
@@ -151,26 +155,16 @@
         $('#reviewPrototype').hide();
     }
 
-    function initializePagination(hotelPageHandler, pageService) {
-        $("#prev").click(() => {pageService.prev(); hotelPageHandler.handlePage(pageService);})
 
-        let leftEllipsis = $("#left-ellipsis");
-        leftEllipsis.click(() => {pageService.selectPage(leftEllipsis); hotelPageHandler.handlePage(pageService);});
-
-        let rightEllipsis = $("#right-ellipsis");
-        rightEllipsis.click(() => {pageService.selectPage(rightEllipsis); hotelPageHandler.handlePage(pageService);});
-
-        $("#next").click(() => {pageService.next(); hotelPageHandler.handlePage(pageService);});
-    }
 
     $(document).ready(() => {
         const hotelPageHandler = new HotelPageHandler('/hotels/review/'+[[${model.id}]], showReview);
         hotelPageHandler.arguments.size=5;
-        const pageService = new PageService();
+        const pageService = new PageService((ps) => {hotelPageHandler.handlePage(ps)});
         hotelPageHandler.handlePage(pageService);
 
         initializePostButton(hotelPageHandler, pageService);
-        initializePagination(hotelPageHandler, pageService);
+        initializePagination(pageService);
     });
 
     $('#modal-map').on('show.bs.modal', (event) => {

@@ -17,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/hotels")
@@ -35,20 +34,12 @@ public class HotelController extends BaseController {
 
     @PostMapping()
     public void create(@Valid @RequestBody HotelProfile model, BindingResult bindingResult, Principal principal) {
-//        if(bindingResult.hasErrors()) {
-//            model.setAllDestinations(this.destinationService.getAllDestinationsNames());
-//            return super.view("hotels/form", model);
-//        }
         this.hotelProfileService.addProfile(model);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize(hotel_ACTION_AUTHORIZATION_EXPRESSION_STRING)
     public void edit(@Valid @RequestBody HotelProfile model, BindingResult bindingResult, @PathVariable("id") String id) {
-//        if(bindingResult.hasErrors()) {
-//            model.setAllDestinations(this.destinationService.getAllDestinationsNames());
-//            return super.view("hotels/form", model);
-//        }
         this.hotelProfileService.addProfile(model);
     }
 
