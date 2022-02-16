@@ -2,6 +2,7 @@ package com.fmi.hotelreviewboard.model.dto;
 
 public class ReviewServiceModel {
     private String id;
+    private String content;
     private Integer score;
 
     public ReviewServiceModel() {
@@ -13,6 +14,14 @@ public class ReviewServiceModel {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public Integer getScore() {

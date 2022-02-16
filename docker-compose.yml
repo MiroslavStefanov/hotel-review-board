@@ -51,9 +51,9 @@ services:
       context: .
       dockerfile: Dockerfile-model
     depends_on:
-      - kafka-2
+      - kafka-1
     links:
-      - kafka-2
+      - kafka-1
 
   zookeeper-1:
     image: confluentinc/cp-zookeeper:latest

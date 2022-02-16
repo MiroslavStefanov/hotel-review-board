@@ -77,9 +77,8 @@ public class HotelProfileServiceImpl implements HotelProfileService {
         review.setPublisher(user);
         review.setContent(content);
         review.setPublishedAt(Timestamp.from(Instant.now()));
-
-
         Review savedReview = reviewRepository.save(review);
+        System.out.println("Added review: " + (savedReview.getScore() != null ? savedReview.getScore().toString() : "Slava bogu"));
         reviewScoreTemplate.send("review", modelMapper.map(savedReview, ReviewServiceModel.class));
         return savedReview.getId();
     }
@@ -96,6 +95,7 @@ public class HotelProfileServiceImpl implements HotelProfileService {
     public void greetingListener(ReviewServiceModel review) {
         Review savedReview = reviewRepository.findById(review.getId()).orElseThrow();
         savedReview.setScore(review.getScore());
+        System.out.printf("Saving score: " + review.getScore().toString());
         reviewRepository.save(savedReview);
     }
 

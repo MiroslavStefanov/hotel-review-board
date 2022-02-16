@@ -52,6 +52,7 @@ public class Review {
     }
 
     @NotNull
+    @Column(length = 3000)
     public String getContent() {
         return content;
     }
