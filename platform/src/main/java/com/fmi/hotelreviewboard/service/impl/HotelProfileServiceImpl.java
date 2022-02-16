@@ -1,6 +1,7 @@
 package com.fmi.hotelreviewboard.service.impl;
 
 import com.fmi.hotelreviewboard.errorHandling.exceptions.EntityNotFoundException;
+import com.fmi.hotelreviewboard.model.dto.ReviewServiceModel;
 import com.fmi.hotelreviewboard.model.entity.HotelProfile;
 import com.fmi.hotelreviewboard.model.entity.Review;
 import com.fmi.hotelreviewboard.model.entity.User;
@@ -8,6 +9,7 @@ import com.fmi.hotelreviewboard.repository.HotelProfileRepository;
 import com.fmi.hotelreviewboard.repository.ReviewRepository;
 import com.fmi.hotelreviewboard.repository.UserRepository;
 import com.fmi.hotelreviewboard.service.HotelProfileService;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -26,13 +28,15 @@ public class HotelProfileServiceImpl implements HotelProfileService {
     private final HotelProfileRepository profileRepository;
     private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
-    private final KafkaTemplate<String, String> reviewScoreTemplate;
+    private final KafkaTemplate<String, ReviewServiceModel> reviewScoreTemplate;
+    private final ModelMapper modelMapper;
 
-    public HotelProfileServiceImpl(HotelProfileRepository profileRepository, UserRepository userRepository, ReviewRepository reviewRepository, KafkaTemplate<String, String> reviewScoreTemplate) {
+    public HotelProfileServiceImpl(HotelProfileRepository profileRepository, UserRepository userRepository, ReviewRepository reviewRepository, KafkaTemplate<String, ReviewServiceModel> reviewScoreTemplate, ModelMapper modelMapper) {
         this.profileRepository = profileRepository;
         this.userRepository = userRepository;
         this.reviewRepository = reviewRepository;
         this.reviewScoreTemplate = reviewScoreTemplate;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -76,7 +80,7 @@ public class HotelProfileServiceImpl implements HotelProfileService {
 
 
         Review savedReview = reviewRepository.save(review);
-        reviewScoreTemplate.send("review", savedReview.getId());
+        reviewScoreTemplate.send("review", modelMapper.map(savedReview, ReviewServiceModel.class));
         return savedReview.getId();
     }
 
@@ -87,12 +91,12 @@ public class HotelProfileServiceImpl implements HotelProfileService {
     }
 
     @KafkaListener(
-            topics = "review",
-            containerFactory = "fooKafkaListenerContainerFactory")
-    public void greetingListener(String reviewId) {
-        Review review = reviewRepository.findById(reviewId).orElseThrow();
-        review.setScore((int) Math.floor(Math.random()*10+1));
-        reviewRepository.save(review);
+            topics = "review-score",
+            containerFactory = "platformKafkaListenerContainerFactory")
+    public void greetingListener(ReviewServiceModel review) {
+        Review savedReview = reviewRepository.findById(review.getId()).orElseThrow();
+        savedReview.setScore(review.getScore());
+        reviewRepository.save(savedReview);
     }
 
 }
